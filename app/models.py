@@ -76,7 +76,7 @@ class Metric(db.Model):
     service_name = db.Column(db.String(120), index=True)
     service_element_name = db.Column(db.String(120), index=True)
     service_level_detail = db.Column(db.Text,index=False)
-    target = db.Column(db.Text, index=True)
+    target = db.Column(db.Integer, index=True)
     service_provider_steward_1 = db.Column(db.String(120), index=True)
     metric_name = db.Column(db.String(120), index=True)
     metric_description = db.Column(db.Text,index=False )

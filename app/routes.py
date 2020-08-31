@@ -3,7 +3,7 @@ from flask import render_template, flash, redirect, url_for, request
 from werkzeug.urls import url_parse
 from flask_login import current_user, login_user, logout_user, login_required
 from app import app, db
-from app.forms import LoginForm, RegistrationForm, EditProfileForm, EmptyForm, PostForm
+from app.forms import LoginForm, RegistrationForm, EditProfileForm, EmptyForm, PostForm, MetricForm
 from app.models import User, Post
 
 @app.before_request
@@ -159,7 +159,7 @@ def unfollow(username):
 @app.route('/add_metric', methods=['GET', 'POST'])
 @login_required
 def add_metric():
-    form = MetricsForm(request.form)
+    form = MetricForm(request.form)
     if request.method == 'POST' and form.validate_on_submit():
         creator = current_user
         service_name = form.service_name.data
