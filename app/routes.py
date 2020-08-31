@@ -153,3 +153,39 @@ def unfollow(username):
         return redirect(url_for('user', username=username))
     else:
         return redirect(url_for('index'))
+
+
+
+@app.route('/add_metric', methods=['GET', 'POST'])
+@login_required
+def add_metric():
+    form = MetricsForm(request.form)
+    if request.method == 'POST' and form.validate_on_submit():
+        creator = current_user
+        service_name = form.service_name.data
+        service_element_name = form.service_element_name.data
+        service_level_detail = form.service_level_detail.data 
+        target = form.target.data
+        service_provider_steward_1 = form.service_provider_steward_1.data
+        metric_name = form.metric_name.data
+        metric_description = form.metric_description.data
+        metric_rationale = metric.rationale.data
+        metric_value_display_format = form.metric_value_display_format.data 
+        threshold_target = form.threshold_target.data
+        threshold_target_rationale = form.threshold_target_rationale.data
+        threshold_target_direction = form.threshold_target_direction.data
+        threshold_trigger = form.threshold_trigger.data
+        threshold_trigger_rationale = form.threshold_trigger_rationale.data
+        threshold_trigger_direction = form.threshold_trigger_direction.datat
+        data_source = form.data_source.data
+        data_update_frequency = form.data_update_frequency.data
+        metric_owner_primary = form.metric_owner_primary.data
+        vantage_control_id = form.vantage_control_id.data
+        user_id = form.user_id.data      
+        db.session.add(metric)
+        db.session.commit()
+        flash('Your post is now live!')
+        return redirect(url_for('index'))
+
+        return render_template('add_metric.html', title='Metrics', form=form,
+                            metrics=metrics.items)
