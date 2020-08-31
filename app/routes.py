@@ -187,5 +187,5 @@ def add_metric():
         flash('Your post is now live!')
         return redirect(url_for('index'))
 
-        return render_template('add_metric.html', title='Metrics', form=form,
+    return render_template('add_metric.html', title='Metrics', form=form,
                             metrics=metrics.items)
