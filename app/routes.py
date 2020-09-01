@@ -3,7 +3,7 @@ from flask import render_template, flash, redirect, url_for, request
 from werkzeug.urls import url_parse
 from flask_login import current_user, login_user, logout_user, login_required
 from app import app, db
-from app.forms import LoginForm, RegistrationForm, EditProfileForm, EmptyForm, PostForm, MetricForm, EditMetricForm
+from app.forms import LoginForm, RegistrationForm, EditProfileForm, EmptyForm, PostForm, MetricForm
 from app.models import User, Post, Metric
 
 @app.before_request
@@ -156,10 +156,24 @@ def unfollow(username):
 
 
 
-@app.route('/add_metric', methods=['GET', 'POST'])
+
+@app.route('/metrics', methods=['GET', 'POST'])
+@login_required
+def list_metrics():
+    metrics = Metric.query.all()
+
+    return render_template('metrics.html',
+                            metrics=metrics, title="Metrics")
+
+
+
+@app.route('/metrics/add', methods=['GET', 'POST'])
 @login_required
 def add_metric():
-    form = EditMetricForm(request.form)
+
+    add_metric = True
+
+    form = MetricForm(request.form)
     if request.method == 'POST' and form.validate_on_submit():
         metric = Metric(
         creator=current_user,
@@ -185,40 +199,66 @@ def add_metric():
         db.session.add(metric)
         db.session.commit()
         flash('New metric added')
-        return redirect(url_for('index'))
+        return redirect(url_for('list_metrics'))
 
-    return render_template('add_metric.html', title='Metrics', form=form)
+    return render_template('/metric.html', action="Add", add_metric=add_metric, title='Add Metrics', form=form)
 
 
-@app.route('/edit_metric/<string:id>', methods=['GET', 'POST'])
+@app.route('/metrics/edit/<string:id>', methods=['GET', 'POST'])
 @login_required
 def edit_metric(id):
+
+    add_metric = False
+
     metric = Metric.query.get_or_404(id)
     form = MetricForm(obj=metric)
     if form.validate_on_submit():
 
-        metric.service_name = form.service_name.data,
-        service_element_name = form.service_element_name.data,
-        service_level_detail = form.service_level_detail.data ,
-        target = form.target.data,
-        service_provider_steward_1 = form.service_provider_steward_1.data,
-        metric_name = form.metric_name.data,
-        metric_description = form.metric_description.data,
-        metric_rationale = form.metric_rationale.data,
-        metric_value_display_format = form.metric_value_display_format.data,
-        threshold_target = form.threshold_target.data,
-        threshold_target_rationale = form.threshold_target_rationale.data,
-        threshold_target_direction = form.threshold_target_direction.data,
-        threshold_trigger = form.threshold_trigger.data,
-        threshold_trigger_rationale = form.threshold_trigger_rationale.data,
-        threshold_trigger_direction = form.threshold_trigger_direction.data,
-        data_source = form.data_source.data,
-        data_update_frequency = form.data_update_frequency.data,
-        metric_owner_primary = form.metric_owner_primary.data,
-        vantage_control_id = form.vantage_control_id.data)     
-        db.session.add(metric)
+        metric.service_name = form.service_name.data
+        metric.service_element_name = form.service_element_name.data
+        metric.service_level_detail = form.service_level_detail.data
+        metric.target = form.target.data
+        metric.service_provider_steward_1 = form.service_provider_steward_1.data
+        metric.metric_name = form.metric_name.data
+        metric.metric_description = form.metric_description.data
+        metric.metric_rationale = form.metric_rationale.data
+        metric.metric_value_display_format = form.metric_value_display_format.data
+        metric.threshold_target = form.threshold_target.data
+        metric.threshold_target_rationale = form.threshold_target_rationale.data
+        metric.threshold_target_direction = form.threshold_target_direction.data
+        metric.threshold_trigger = form.threshold_trigger.data
+        metric.threshold_trigger_rationale = form.threshold_trigger_rationale.data
+        metric.threshold_trigger_direction = form.threshold_trigger_direction.data
+        metric.data_source = form.data_source.data
+        metric.data_update_frequency = form.data_update_frequency.data
+        metric.metric_owner_primary = form.metric_owner_primary.data
+        metric.vantage_control_id = form.vantage_control_id.data     
         db.session.commit()
-        flash('New metric added')
-        return redirect(url_for('index'))
+        flash('Your metric changes have been saved')
+        return redirect(url_for('list_metrics'))
+    elif request.method == 'GET':
+        form.username.data = current_user.username
+        form.about_me.data = current_user.about_me
+        form.service_name.data = metric.service_name
+        form.service_element_name.data = metric.service_element_name
+        form.service_level_detail.data = metric.service_level_detail
+        form.target.data = metric.target
+        form.service_provider_steward_1.data = metric.service_provider_steward_1
+        form.metric_name.data = metric.metric_name
+        form.metric_description.data = metric.metric_description
+        form.metric_rationale.data = metric.metric_rationale
+        form.metric_value_display_format.data = metric.metric_value_display_format
+        form.threshold_target.data = metric.threshold_target
+        form.threshold_target_rationale.data = metric.threshold_target_rationale
+        form.threshold_target_direction.data = metric.threshold_target_direction
+        form.threshold_trigger.data = metric.threshold_trigger
+        form.threshold_trigger_rationale.data = metric.threshold_trigger_rationale
+        form.threshold_trigger_direction.data = metric.threshold_trigger_direction
+        form.data_source.data = metric.data_source
+        form.data_update_frequency.data = metric.data_update_frequency
+        form.metric_owner_primary.data = metric.metric_owner_primary
+        form.vantage_control_id.data = metric.vantage_control_id
 
-    return render_template('add_metric.html', title='Metrics', form=form)
+    return render_template('metric.html', title='Edit Metric', action="Edit",
+                           add_metric=add_metric, form=form,
+                           metric=metric)

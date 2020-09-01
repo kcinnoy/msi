@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% import 'bootstrap/wtf.html' as wtf %}
+{% block title %}Metrics{% endblock %}
 
 {% block app_content %}
 <div class="pcoded-main-container pt-10">
@@ -15,7 +16,71 @@
                     </div>
                     <div class="card-body">
                         <div class="col-md-4">
-                            {{ wtf.quick_form(form) }}
+                            <br/>
+                            {% with messages = get_flashed_messages() %}
+                            {% if messages %}
+                                {% for message in messages %}
+                                <div class="alert alert-info" role="alert">{{ message }}</div>
+                                {% endfor %}
+                            {% endif %}
+                            {% endwith %}
+                            <br/>
+                            {% if metrics %}
+                            <hr class="intro-divider">
+                            <div class="center">
+                                <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                    <th style="width:50px"> Service Name </th>
+                                    <th width="15%"> Service Element Name </th>
+                                    <th width="15%"> Service Provider Steward 1 </th>
+                                    <th width="15%"> Metric Name </th>
+                                    <th width="5%"> Threshold target </th>
+                                    <th width="5%"> Threshold direction </th>
+                                    <th width="5%"> Threshold trigger </th>
+                                    <th width="5%"> Threshold trigger direction</th>
+                                    <th width="10%"> Metric Owner Primary</th>
+                                    <th width="5%"> Edit</th>
+                                    <th width="5%"> Delete</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for metric in metrics %}
+                                    <tr>
+                                    <td> {{ metric.service_name }} </td>
+                                    <td> {{ metric.service_element_name }} </td>
+                                    <td> {{ metric.service_provider_steward_1 }} </td>
+                                    <td> {{ metric.metric_name }} </td>
+                                    <td> {{ metric.threshold_target }} </td>
+                                    <td> {{ metric.threshold_target_direction }} </td>
+                                    <td> {{ metric.threshold_trigger }} </td>
+                                    <td> {{ metric.threshold_trigger_direction }} </td>
+                                    <td> {{ metric.metric_owner_primary }} </td>
+                                    <td>
+                                        <a href="{{ url_for('edit_metric', id=metric.id) }}">
+                                        <i class="fa fa-pencil"></i> Edit 
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="#"></a>
+                                        <i class="fa fa-trash"></i> Delete 
+                                        </a>
+                                    </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                                </table>
+                            </div>
+                            <div style="text-align: center">
+                            {% else %}
+                            <div style="text-align: center">
+                                <h3> No Metrics have been added. </h3>
+                                <hr class="intro-divider">
+                            {% endif %}
+                            <a href="{{ url_for('add_metric') }}" class="btn btn-default btn-lg">
+                                <i class="fa fa-plus"></i>
+                                Add Metric
+                            </a>
                         </div>
                 </div>
             </div>
