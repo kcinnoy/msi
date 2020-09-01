@@ -55,14 +55,12 @@ class PostForm(FlaskForm):
 
 
 class MetricForm(FlaskForm):
-    post = TextAreaField('Say something', validators=[DataRequired(), Length(min=1, max=140)])
-    username = StringField('Username', validators=[DataRequired()])
     service_name = StringField('Service name', validators=[DataRequired()])
     service_element_name = StringField('Service Element name', validators=[DataRequired()])
     service_level_detail = TextAreaField('Service level detail', validators=[Length( max=4000)])
     target = IntegerField('Target', validators=[DataRequired()])
-    service_provider_steward_1 = StringField('Target')
-    metric_name = StringField('Target', validators=[DataRequired()])
+    service_provider_steward_1 = StringField('Service Provider Steward 1')
+    metric_name = StringField('Metric Name', validators=[DataRequired()])
     metric_description = TextAreaField('Metric description', validators=[Length( max=5000)])
     metric_rationale = TextAreaField('Metric rationale', validators=[Length( max=4000)])
     metric_value_display_format = StringField('Metric value display format')
