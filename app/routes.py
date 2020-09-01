@@ -204,7 +204,7 @@ def add_metric():
     return render_template('/metric.html', action="Add", add_metric=add_metric, title='Add Metrics', form=form)
 
 
-@app.route('/metrics/edit/<string:id>', methods=['GET', 'POST'])
+@app.route('/metrics/edit/<int:id>', methods=['GET', 'POST'])
 @login_required
 def edit_metric(id):
 
@@ -260,3 +260,18 @@ def edit_metric(id):
     return render_template('metric.html', title='Edit Metric', action="Edit",
                            add_metric=add_metric, form=form,
                            metric=metric)
+
+
+@app.route('/metrics/delete/<int:id>', methods=['GET', 'POST'])
+@login_required
+def delete_metric(id):
+   
+    metric = Metric.query.get_or_404(id)
+    db.session.delete(metric)
+    db.session.commit()
+    flash('You have successfully deleted the metric.')
+
+    # redirect to the departments page
+    return redirect(url_for('list_metrics'))
+
+    return render_template(title="Delete Metric")
