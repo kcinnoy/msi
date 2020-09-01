@@ -237,8 +237,6 @@ def edit_metric(id):
         flash('Your metric changes have been saved')
         return redirect(url_for('list_metrics'))
     elif request.method == 'GET':
-        form.username.data = current_user.username
-        form.about_me.data = current_user.about_me
         form.service_name.data = metric.service_name
         form.service_element_name.data = metric.service_element_name
         form.service_level_detail.data = metric.service_level_detail

@@ -1897,7 +1897,13 @@ pre code {
     }
 }
 
+
+
+
+
 .table {
+    table-layout: fixed;
+    white-space: nowrap;
     width: 100%;
     margin-bottom: 1rem;
     color: #222;
@@ -1905,7 +1911,7 @@ pre code {
 
 .table th,
   .table td {
-    padding: 0.75rem;
+    padding: 0.1rem;
     vertical-align: top;
     border-top: 1px solid #e3eaef;
 }
@@ -26026,7 +26032,7 @@ pre[class*=language-]:before {
 .table th {
     border-top: 1px solid #e2e5e8;
     white-space: normal;
-    padding: 1.05rem 0.75rem;
+    padding: 0.3rem 0.3rem;
 }
 
 .table thead th {
