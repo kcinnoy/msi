@@ -94,5 +94,44 @@ class Metric(db.Model):
     vantage_control_id = db.Column(db.String(120), index=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
+    def __init__(
+        self, 
+        service_name, 
+        service_level_detail, 
+        target,  
+        service_provider_steward_1,  
+        metric_name,  
+        metric_description,  
+        metric_rationale,  
+        metric_value_display_format,  
+        threshold_target,  
+        threshold_target_rationale,  
+        threshold_target_direction,  
+        threshold_trigger,  
+        threshold_trigger_rationale,  
+        threshold_trigger_direction,  
+        data_source,  
+        data_update_frequency,  
+        metric_owner_primary, 
+        vantage_control_id):
+        self.service_name = service_name
+        self.service_level_detail = service_level_detail
+        self.target = target  
+        self.service_provider_steward_1 = service_provider_steward_1  
+        self.metric_name = metric_name
+        self.metric_description = metric_description
+        self.metric_rationale  = metric_rationale
+        self.metric_value_display_format =  metric_value_display_format
+        self.threshold_target = threshold_target
+        self.threshold_target_rationale = threshold_target_rationale
+        self.threshold_target_direction = threshold_target_direction
+        self.threshold_trigger = threshold_trigger 
+        self.threshold_trigger_rationale = threshold_trigger_rationale  
+        self.threshold_trigger_direction = threshold_trigger_direction  
+        self.data_source = data_source  
+        self.data_update_frequency = data_update_frequency  
+        self.metric_owner_primary = metric_owner_primary 
+        self.vantage_control_id = vantage_control_id
+
     def __repr__(self):
         return '<Metric {}>'.format(self.service_name)

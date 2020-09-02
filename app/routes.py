@@ -1,10 +1,11 @@
 from datetime import datetime
-from flask import render_template, flash, redirect, url_for, request
+from flask import Flask, render_template, flash, redirect, url_for, request, jsonify
 from werkzeug.urls import url_parse
 from flask_login import current_user, login_user, logout_user, login_required
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, EditProfileForm, EmptyForm, PostForm, MetricForm
 from app.models import User, Post, Metric
+import flask_excel as excel
 
 @app.before_request
 def before_request():
@@ -275,3 +276,48 @@ def delete_metric(id):
     return redirect(url_for('list_metrics'))
 
     return render_template(title="Delete Metric")
+
+
+@app.route("/import", methods=['GET', 'POST'])
+def doimport():
+    if request.method == 'POST':
+
+        def metric_init_func(row):
+            m = Metric(
+                row['service_name'],
+                row['service_element_name'],
+                row['service_level_detail'],
+                row['target'],
+                row['service_provider_steward_1'],
+                row['metric_name'],
+                row['metric_description'],
+                row['metric_rationale'],
+                row['metric_value_display_format'],
+                row['threshold_target'],
+                row['threshold_target_rationale'],
+                row['threshold_target_direction'],
+                row['threshold_trigger'],
+                row['threshold_trigger_rationale'],
+                row['threshold_trigger_direction'],
+                row['data_source'],
+                row['data_update_frequency'],
+                row['metric_owner_primary'],
+                row['vantage_control_id'])
+            return m
+        request.save_book_to_database(
+            field_name='file', session=db.session,
+            tables=[Metric],
+            initializers=[metric_init_func])
+        return redirect(url_for('.handson_table'), code=302)
+    return '''
+    <!doctype html>
+    <title>Upload an excel file</title>
+    <h1>Excel file upload (xls, xlsx, ods please)</h1>
+    <form action="" method=post enctype=multipart/form-data><p>
+    <input type=file name=file><input type=submit value=Upload>
+    </form>
+    '''
+@app.route("/handson_view", methods=['GET'])
+def handson_table():
+    return excel.make_response_from_tables(
+        db.session, [Metric], 'handsontable.html')

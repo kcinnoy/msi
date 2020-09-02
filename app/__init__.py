@@ -10,6 +10,8 @@ from flask_moment import Moment
 import flask_excel as excel
 from config import Config
 
+
+
 app = Flask(__name__)
 app.config.from_object(Config)
 db = SQLAlchemy(app)
@@ -18,6 +20,7 @@ login = LoginManager(app)
 login.login_view = 'login'
 bootstrap = Bootstrap(app)
 moment = Moment(app)
+excel.init_excel(app)
 
 
 from app import routes, models, errors
