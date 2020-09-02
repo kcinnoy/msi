@@ -97,6 +97,7 @@ class Metric(db.Model):
     def __init__(
         self, 
         service_name, 
+        service_element_name,
         service_level_detail, 
         target,  
         service_provider_steward_1,  
@@ -115,6 +116,7 @@ class Metric(db.Model):
         metric_owner_primary, 
         vantage_control_id):
         self.service_name = service_name
+        self.service_element_name = service_element_name
         self.service_level_detail = service_level_detail
         self.target = target  
         self.service_provider_steward_1 = service_provider_steward_1  
