@@ -158,11 +158,23 @@ def unfollow(username):
 
 
 
+
+
+
 @app.route('/metrics', methods=['GET', 'POST'])
 @login_required
 def list_metrics():
     metrics = Metric.query.all()
 
+    return render_template('metrics.html',
+                            metrics=metrics, title="Metrics")
+
+@app.route('/metrics/<username>', methods=['GET', 'POST'])
+@login_required
+def own_metrics(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    metrics = Metric.query.filter_by(user_id=self.id)
+    
     return render_template('metrics.html',
                             metrics=metrics, title="Metrics")
 
