@@ -173,9 +173,9 @@ def list_metrics():
 @login_required
 def own_metrics(username):
     user = User.query.filter_by(username=username).first_or_404()
-    metrics = Metric.query.filter_by(user_id=self.id)
+    metrics = current_user.my_metrics()
     
-    return render_template('metrics.html',
+    return render_template('my_metrics.html',
                             metrics=metrics, title="Metrics")
 
 
@@ -295,6 +295,7 @@ def doimport():
     if request.method == 'POST':
 
         def metric_init_func(row):
+            user_id=current_user.id
             m = Metric(
                 row['service_name'],
                 row['service_element_name'],
@@ -314,7 +315,8 @@ def doimport():
                 row['data_source'],
                 row['data_update_frequency'],
                 row['metric_owner_primary'],
-                row['vantage_control_id'])
+                row['vantage_control_id'],
+                user_id)
             return m
         request.save_book_to_database(
             field_name='file', session=db.session,

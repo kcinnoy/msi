@@ -57,6 +57,10 @@ class User(UserMixin, db.Model):
         own = Post.query.filter_by(user_id=self.id)
         return followed.union(own).order_by(Post.timestamp.desc())
 
+    def my_metrics(self):
+        own = Metric.query.filter_by(user_id=self.id)
+        return own
+
 @login.user_loader
 def load_user(id):
     return User.query.get(int(id))
@@ -114,7 +118,8 @@ class Metric(db.Model):
         data_source,  
         data_update_frequency,  
         metric_owner_primary, 
-        vantage_control_id):
+        vantage_control_id,
+        user_id):
         self.service_name = service_name
         self.service_element_name = service_element_name
         self.service_level_detail = service_level_detail
@@ -134,6 +139,8 @@ class Metric(db.Model):
         self.data_update_frequency = data_update_frequency  
         self.metric_owner_primary = metric_owner_primary 
         self.vantage_control_id = vantage_control_id
+        self.user_id = user_id
 
     def __repr__(self):
         return '<Metric {}>'.format(self.service_name)
+    
