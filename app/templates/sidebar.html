@@ -9,12 +9,12 @@
 					</li>
 					<li class="nav-item">
                         <a target="_blank" rel="noopener" 
-                           href="https://appseed.us/admin-dashboards/flask-dashboard-gradientable" class="nav-link ">
+                           href="#" class="nav-link ">
                             <span class="pcoded-micon">
                                 <i class="feather icon-layers"></i></span><span class="pcoded-mtext">All services</span></a>
 					</li>
 					<li class="nav-item">
-					    <a href="" class="nav-link ">
+							<a href="#">
                             <span class="pcoded-micon">
                                 <i class="feather icon-layers"></i></span><span class="pcoded-mtext">My services</span></a>
 					</li>
@@ -29,12 +29,12 @@
 						<label>Metrics</label>
 					</li>
 					<li class="nav-item">
-					    <a href="" class="nav-link ">
-                            <span class="pcoded-micon">
-                                <i class="feather icon-layout"></i></span><span class="pcoded-mtext">All metrics</span></a>
+						<a href="{{ url_for('list_metrics') }}" class="nav-link ">
+                        <span class="pcoded-micon">
+                            <i class="feather icon-layout"></i></span><span class="pcoded-mtext">All metrics</span></a>
 					</li>
 					<li class="nav-item">
-					    <a href="" class="nav-link ">
+							<a href="{{ url_for('own_metrics', username=current_user.username) }}">
                             <span class="pcoded-micon">
                                 <i class="feather icon-layout"></i></span><span class="pcoded-mtext">My metrics</span></a>
 					</li>

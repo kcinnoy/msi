@@ -18,18 +18,12 @@
                     </div>
                     <div class="card-body">
                         <div class="row up_row">
-                                <div class="">
-                                        <a href="{{ url_for('add_metric') }}" class="btn btn-default btn-sm">
-                                            <i class="fa fa-plus"></i>
-                                            Add Metric
-                                        </a>
-                                    </div>
-                                    <div class="import_holder">
-                                        <a href="{{ url_for('doimport') }}"  class="btn btn-default btn-sm">
-                                            <i class="fa fa-plus"></i>
-                                            Import Metric template
-                                        </a>
-                                    </div>
+                            <div>
+                                <p>Import metric file template (xls, xlsx)</p>
+                                <form action="" method=post enctype=multipart/form-data><p>
+                                    <input type=file name=file><input type=submit value=Upload>
+                                </form>
+                            </div>
                         </div>
                         <div class="col-md-12">
                             {% with messages = get_flashed_messages() %}
@@ -46,14 +40,16 @@
                                 <thead>
                                     <tr>
                                     <th width="15%"> Service Name </th>
-                                    <th width="15%"> Service Element Name </th>
-                                    <th width="15%"> Service Provider Steward 1 </th>
+                                    <th width="12%"> Service Element Name </th>
+                                    <th width="12%"> Service Provider Steward 1 </th>
                                     <th width="10%"> Metric Name </th>
                                     <th width="10%"> Threshold target </th>
                                     <th width="10%"> Threshold direction </th>
                                     <th width="10%"> Threshold trigger </th>
                                     <th width="10%"> Threshold trigger direction</th>
-                                    <th width="15%"> Metric Owner Primary</th>
+                                    <th width="10%"> Metric Owner Primary</th>
+                                    <th width="5%"> Edit</th>
+                                    <th width="8%"> Delete</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -68,6 +64,16 @@
                                     <td> {{ metric.threshold_trigger }} </td>
                                     <td> {{ metric.threshold_trigger_direction }} </td>
                                     <td> {{ metric.metric_owner_primary }} </td>
+                                    <td>
+                                        <a href="{{ url_for('edit_metric', id=metric.id) }}">
+                                        <i class="fa fa-pencil"></i> Edit 
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="{{ url_for('delete_metric', id=metric.id) }}">
+                                        <i class="fa fa-trash"></i> Delete 
+                                        </a>
+                                    </td>
                                     </tr>
                                 {% endfor %}
                                 </tbody>

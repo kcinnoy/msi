@@ -16,7 +16,20 @@
                     </div>
                     <div class="card-body">
                         <div class="col-md-12">
-                            <br/>
+                            <div class="row up_row">
+                                <div class="">
+                                    <a href="{{ url_for('add_metric') }}" class="btn btn-default btn-sm">
+                                        <i class="fa fa-plus"></i>
+                                        Add Metric
+                                    </a>
+                                </div>
+                                    <div class="import_holder">
+                                        <a href="{{ url_for('doimport') }}"  class="btn btn-default btn-sm">
+                                            <i class="fa fa-plus"></i>
+                                            Import Metric template
+                                        </a>
+                                </div>
+                            </div>
                             {% with messages = get_flashed_messages() %}
                             {% if messages %}
                                 {% for message in messages %}
@@ -24,7 +37,6 @@
                                 {% endfor %}
                             {% endif %}
                             {% endwith %}
-                            <br/>
                             {% if metrics %}
                             <hr class="intro-divider">
                             <div class="center">
@@ -77,10 +89,6 @@
                                 <h3> No Metrics have been added. </h3>
                                 <hr class="intro-divider">
                             {% endif %}
-                            <a href="{{ url_for('add_metric') }}" class="btn btn-default btn-sm">
-                                <i class="fa fa-plus"></i>
-                                Add Metric
-                            </a>
                         </div>
                 </div>
             </div>

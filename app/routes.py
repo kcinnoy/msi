@@ -171,8 +171,8 @@ def list_metrics():
 
 @app.route('/metrics/<username>', methods=['GET', 'POST'])
 @login_required
+
 def own_metrics(username):
-    user = User.query.filter_by(username=username).first_or_404()
     metrics = current_user.my_metrics()
     
     return render_template('my_metrics.html',
@@ -284,15 +284,20 @@ def delete_metric(id):
     db.session.commit()
     flash('You have successfully deleted the metric.')
 
-    # redirect to the departments page
     return redirect(url_for('list_metrics'))
 
     return render_template(title="Delete Metric")
 
 
+
+
+
 @app.route("/import", methods=['GET', 'POST'])
+
 def doimport():
     if request.method == 'POST':
+
+        metrics = Metric.query.all()
 
         def metric_init_func(row):
             user_id=current_user.id
@@ -322,16 +327,10 @@ def doimport():
             field_name='file', session=db.session,
             tables=[Metric],
             initializers=[metric_init_func])
-        return redirect(url_for('.handson_table'), code=302)
-    return '''
-    <!doctype html>
-    <title>Upload an excel file</title>
-    <h1>Excel file upload (xls, xlsx, ods please)</h1>
-    <form action="" method=post enctype=multipart/form-data><p>
-    <input type=file name=file><input type=submit value=Upload>
-    </form>
-    '''
-@app.route("/handson_view", methods=['GET'])
-def handson_table():
-    return excel.make_response_from_tables(
-        db.session, [Metric], 'handsontable.html')
+        return redirect(url_for('list_metrics'))
+    return render_template('metrics_import.html', title="Metrics")
+
+# @app.route("/handson_view", methods=['GET'])
+# def handson_table():
+#     return excel.make_response_from_tables(
+#         db.session, [Metric], 'handsontable.html')
