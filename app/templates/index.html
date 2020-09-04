@@ -11,12 +11,20 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header">
-                        <h5>Activity Feed</h5>
+                        <h5>Home</h5>
                         <div class="card-header-right">
                         </div>
                     </div>
                     <div class="card-body">
-                        <h1>Hi, {{ current_user.username }}!</h1>
+                        <div class="row pb-5">
+                            <div class="col-md-6">
+                                chart1 
+                            </div>
+                            <div class="col-md-6">
+                                chart2
+                            </div>
+                        </div>
+                        <h3>Hi, {{ current_user.username }}!</h3>
                         {% if form %}
                         {{ wtf.quick_form(form) }}
                         <br>
@@ -24,20 +32,6 @@
                         {% for post in posts %}
                             {% include '_post.html' %}
                         {% endfor %}
-                        <nav aria-label="...">
-                            <ul class="pager">
-                                <li class="previous{% if not prev_url %} disabled{% endif %}">
-                                    <a href="{{ prev_url or '#' }}">
-                                        <span aria-hidden="true">&larr;</span> Newer posts
-                                    </a>
-                                </li>
-                                <li class="next{% if not next_url %} disabled{% endif %}">
-                                    <a href="{{ next_url or '#' }}">
-                                        Older posts <span aria-hidden="true">&rarr;</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
                     </div>
                 </div>
             </div>
