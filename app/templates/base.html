@@ -18,9 +18,13 @@
     <meta name="author" content="Codedthemes" />
     <!-- Favicon icon -->
     <!-- <link rel="icon" href="/static/assets/images/favicon.ico" type="image/x-icon"> -->
-
+    <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'></script> -->
     <!-- vendor css -->
     <link rel="stylesheet" href="/static/assets/css/style.css">
+    {% if request.path == '/' %}
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'></script>
+    {% endif %}
+
 
 
 </head>
@@ -53,5 +57,90 @@
 </html>
 
 {% block scripts %}
+
+<script>
+    // bar chart data
+    var barData = {
+      labels : [
+        {% for item in labels_1 %}
+         "{{ item }}",
+        {% endfor %}
+        ],
+
+      datasets : [{
+        fillColor: "rgba(151,187,205,0.2)",
+        strokeColor: "rgba(151,187,205,1)",
+        pointColor: "rgba(151,187,205,1)",
+        data : [
+          {% for item in values_1 %}
+             "{{ item }}",
+            {% endfor %}
+      ]
+        }
+      ]
+    }
+
+    
+   // get bar chart canvas
+   var mychart = document.getElementById("chart_1").getContext("2d");
+
+     steps = 10
+     max = {{max_count_1}}
+
+   // draw bar chart
+   new Chart(mychart).Bar(barData, {
+        scaleOverride: true,
+        scaleSteps: steps,
+        scaleStepWidth: Math.ceil(max / steps),
+        scaleStartValue: 0,
+        scaleShowVerticalLines: true,
+        scaleShowGridLines : true,
+        barShowStroke : true,
+        scaleShowLabels: true
+        }
+    );
+
+
+    var barData_2 = {
+      labels : [
+        {% for item in labels_2 %}
+         "{{ item }}",
+        {% endfor %}
+        ],
+
+      datasets : [{
+        fillColor: "rgba(151,187,205,0.2)",
+        strokeColor: "rgba(151,187,205,1)",
+        pointColor: "rgba(151,187,205,1)",
+        data : [
+          {% for item in values_2 %}
+             "{{ item }}",
+            {% endfor %}
+      ]
+        }
+      ]
+    }
+
+
+
+   var mychart = document.getElementById("chart_2").getContext("2d");
+
+    steps = 10
+    max = {{max_count_2}}
+
+    // draw bar chart
+    new Chart(mychart).Bar(barData_2, {
+        scaleOverride: true,
+        scaleSteps: steps,
+        scaleStepWidth: Math.ceil(max / steps),
+        scaleStartValue: 0,
+        scaleShowVerticalLines: true,
+        scaleShowGridLines : true,
+        barShowStroke : true,
+        scaleShowLabels: true
+        }
+    );
+
+  </script>
 
 {% endblock %}

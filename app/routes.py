@@ -5,6 +5,7 @@ from flask_login import current_user, login_user, logout_user, login_required
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, EditProfileForm, EmptyForm, PostForm, MetricForm
 from app.models import User, Post, Metric
+from sqlalchemy import func
 import flask_excel as excel
 
 @app.before_request
@@ -12,6 +13,28 @@ def before_request():
     if current_user.is_authenticated:
         current_user.last_seen = datetime.utcnow()
         db.session.commit()
+
+
+# bar chart data
+
+metric_owner = Metric.query.with_entities(Metric.metric_owner_primary, func.count(Metric.service_name)).group_by(Metric.metric_owner_primary).all()
+labels_1 = [e[0] for e in metric_owner]
+values_1 = [e[1] for e in metric_owner]
+max_count_1 = max(values_1)+5
+
+service_provider = Metric.query.with_entities(Metric.service_provider_steward_1, func.count(Metric.service_name)).group_by(Metric.service_provider_steward_1).all()
+labels_2 = [e[0] for e in service_provider]
+values_2 = [e[1] for e in service_provider]
+max_count_2 = max(values_2)+5
+
+
+colors = [
+    "#F7464A", "#46BFBD", "#FDB45C", "#FEDCBA",
+    "#ABCDEF", "#DDDDDD", "#ABCABC", "#4169E1",
+    "#C71585", "#FF4500", "#FEDCBA", "#46BFBD"]
+
+# bar chart data end
+
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
@@ -31,9 +54,18 @@ def index():
         if posts.has_next else None
     prev_url = url_for('index', page=posts.prev_num) \
         if posts.has_prev else None
-    return render_template('index.html', title='Home', form=form,
-                            posts=posts.items, next_url=next_url,
-                            prev_url=prev_url)
+
+    blabels_1=labels_1
+    bvalues_1=values_1
+    bmax_count_1=max_count_1
+
+    blabels_2=labels_2
+    bvalues_2=values_2
+    bmax_count_2=max_count_2
+     
+    return render_template('index.html', title='Home', form=form, posts=posts.items, next_url=next_url,
+                            prev_url=prev_url, max_count_1=bmax_count_1, labels_1=blabels_1, values_1=bvalues_1,
+                            max_count_2=bmax_count_2, labels_2=blabels_2, values_2=bvalues_2)
 
 @app.route('/explore')
 @login_required
@@ -334,3 +366,11 @@ def doimport():
 # def handson_table():
 #     return excel.make_response_from_tables(
 #         db.session, [Metric], 'handsontable.html')
+
+
+# @app.route("/test", methods=['GET'])
+
+# def tester():
+#     xx = Metric.query.with_entities(Metric.metric_owner_primary, func.count(Metric.service_name)).group_by(Metric.metric_owner_primary).all()
+#     for x in range(len(xx)):
+#         print(xx[x]) 
