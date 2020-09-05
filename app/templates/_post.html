@@ -1,16 +1,15 @@
-<table class="table table-hover">
-    <tr>
-        <td width="70px">
-            <a href="{{ url_for('user', username=post.author.username) }}">
+<div class="row">
+    <div class="col-md-6">
+        <a href="{{ url_for('user', username=post.author.username) }}">
+            {{ post.author.username }}
+        </a>
+         said {{ moment(post.timestamp).fromNow() }}: {{ post.body }}
+    </div>
+    <div class="col-md-2 ml-2">
+        {% if post.author == current_user %}
+            <a href="{{ url_for('delete_comment', id=post.id) }}">
+                <i class="fa fa-trash"></i> Delete 
             </a>
-        </td>
-        <td>
-            <a href="{{ url_for('user', username=post.author.username) }}">
-                {{ post.author.username }}
-            </a>
-            said {{ moment(post.timestamp).fromNow() }}:
-            <br>
-            {{ post.body }}
-        </td>
-    </tr>
-</table>
+        {% endif %}
+    </div>
+</div>

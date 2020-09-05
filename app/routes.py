@@ -67,6 +67,24 @@ def index():
                             prev_url=prev_url, max_count_1=bmax_count_1, labels_1=blabels_1, values_1=bvalues_1,
                             max_count_2=bmax_count_2, labels_2=blabels_2, values_2=bvalues_2)
 
+
+
+
+@app.route('/comment/delete/<int:id>')
+@login_required
+def delete_comment(id):
+        comment = Post.query.get_or_404(id)
+        user = comment.user_id
+        db.session.delete(comment)
+        db.session.commit()
+        flash('You have successfully deleted a comment')
+
+        return redirect(url_for('index', user=user, comment=comment))
+
+        return render_template(title="Delete Metric")
+
+
+
 @app.route('/explore')
 @login_required
 def explore():
