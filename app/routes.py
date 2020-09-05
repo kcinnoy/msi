@@ -79,7 +79,7 @@ def delete_comment(id):
         db.session.commit()
         flash('You have successfully deleted a comment')
 
-        return redirect(url_for('index', user=user, comment=comment))
+        return redirect(url_for('index'))
 
         return render_template(title="Delete Metric")
 
